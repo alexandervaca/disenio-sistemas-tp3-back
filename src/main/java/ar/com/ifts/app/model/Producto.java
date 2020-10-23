@@ -24,7 +24,7 @@ public class Producto implements Serializable {
 	private String descProducto;
 
 	@OneToOne
-    @JoinColumn(name="idCategoria")
+    @JoinColumn(name="producto_categoria_id")
 	private Categoria categoria;
 
 	public Long getIdProducto() {
