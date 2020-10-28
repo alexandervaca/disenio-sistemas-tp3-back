@@ -3,6 +3,7 @@ package ar.com.ifts.app.model;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,6 +24,8 @@ public class Producto implements Serializable {
 
 	private String descProducto;
 
+	private BigDecimal precio;
+
 	@OneToOne
     @JoinColumn(name="producto_categoria_id")
 	private Categoria categoria;
@@ -30,25 +33,25 @@ public class Producto implements Serializable {
 	public Long getIdProducto() {
 		return idProducto;
 	}
-
 	public void setIdProducto(Long idProducto) {
 		this.idProducto = idProducto;
 	}
-
 	public String getDescProducto() {
 		return descProducto;
 	}
-
 	public void setDescProducto(String descProducto) {
 		this.descProducto = descProducto;
 	}
-
 	public Categoria getCategoria() {
 		return categoria;
 	}
-
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
-
+	public BigDecimal getPrecio() {
+		return precio;
+	}
+	public void setPrecio(BigDecimal precio) {
+		this.precio = precio;
+	}
 }

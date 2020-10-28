@@ -1,5 +1,6 @@
 package ar.com.ifts.app;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
@@ -21,18 +22,19 @@ public class ProductoRepositoryTest {
 	private CategoriaRepository categoriaRepository;
 
 	@Test
-	public void testNuevoProducto() {
+	public void testNuevoProductoConCategoria() {
 		Optional<Categoria> categoriaOptional = categoriaRepository.findById(1L);
 		Categoria categoria = categoriaOptional.isPresent() ? categoriaOptional.get() : null;
 		Assertions.assertNotNull(categoria);
 
-		Producto entity = new Producto();
-		entity.setDescProducto("Pantalon");
-		entity.setCategoria(categoria);
-		productoRepository.save(entity);
+		Producto producto = new Producto();
+		producto.setDescProducto("Pantalon");
+		producto.setCategoria(categoria);
+		producto.setPrecio(BigDecimal.ZERO);
+		productoRepository.save(producto);
 
-		Assertions.assertNotNull(entity.getIdProducto());
-		System.out.println(entity.getDescProducto() + " " + entity.getCategoria().getDescCategoria());
+		Assertions.assertNotNull(producto.getIdProducto());
+		System.out.println(producto.getDescProducto() + " " + producto.getCategoria().getDescCategoria());
 	}
 
 	@Test

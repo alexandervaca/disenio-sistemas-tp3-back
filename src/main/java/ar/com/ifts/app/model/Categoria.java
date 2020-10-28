@@ -24,15 +24,12 @@ public class Categoria implements Serializable {
 	public Long getIdCategoria() {
 		return idCategoria;
 	}
-
 	public void setIdCategoria(Long idCategoria) {
 		this.idCategoria = idCategoria;
 	}
-
 	public String getDescCategoria() {
 		return descCategoria;
 	}
-
 	public void setDescCategoria(String descCategoria) {
 		this.descCategoria = descCategoria;
 	}
