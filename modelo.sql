@@ -4,7 +4,7 @@
 
 -- --------------------------------------------------------
 
---2020-10-23
+-- 2020-10-23
 
 --
 -- Estructura de tabla para la tabla `categorias`
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `productos` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
---2020-10-26
+-- 2020-10-26
 
 --
 -- Estructura de tabla para la tabla `compras`
