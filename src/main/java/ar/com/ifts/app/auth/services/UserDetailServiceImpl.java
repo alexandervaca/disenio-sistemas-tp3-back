@@ -1,8 +1,6 @@
 package ar.com.ifts.app.auth.services;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -13,10 +11,12 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import ar.com.ifts.app.exception.RegisterException;
+import ar.com.ifts.app.model.Categoria;
 import ar.com.ifts.app.model.Permiso;
 import ar.com.ifts.app.model.Usuario;
 import ar.com.ifts.app.model.enums.PermisosEnum;
 import ar.com.ifts.app.model.input.RequestRegisterBody;
+import ar.com.ifts.app.repository.CategoriaRepository;
 import ar.com.ifts.app.repository.PermisoRepository;
 import ar.com.ifts.app.repository.UsuarioRepository;
 
@@ -28,6 +28,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
 	@Autowired
 	private PermisoRepository permisoRepository;
+	
+	@Autowired
+	private CategoriaRepository categoriaRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -48,12 +51,15 @@ public class UserDetailServiceImpl implements UserDetailsService {
 			System.out.println(findByUsername.get().getPermisos());
 		} else {
 			PermisosEnum permiso = PermisosEnum.valueOf(request.getPermiso());
-			List<Permiso> permisos = permiso.getRoles().stream().map(rol -> permisoRepository.findByDescPermiso(rol))
-					.collect(Collectors.toList());
+			Permiso permisoObj = permisoRepository.findByDescPermiso(permiso.getRole());
+			Categoria categoria = null;
+			if (request.getIdCategoria() != null) {
+				categoria = categoriaRepository.findById(request.getIdCategoria()).orElse(null);				
+			}
 
 			Usuario usuario = new Usuario(request.getUsername(),
 					BCrypt.hashpw(request.getPassword(), BCrypt.gensalt(12)), request.getMail(), permiso.isHabilitado(),
-					permisos);
+					permisoObj, categoria, request.getNombre());
 			usuarioRepository.save(usuario);
 		}
 	}

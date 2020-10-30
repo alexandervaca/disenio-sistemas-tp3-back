@@ -3,9 +3,8 @@ package ar.com.ifts.app.model;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -13,7 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -33,32 +32,34 @@ public class Usuario implements UserDetails {
 	private String username;
 
 	private String password;
-	
+
 	private String mail;
-	
+
 	private boolean habilitado;
 
-	@OneToMany(fetch = EAGER, cascade = {
-			CascadeType.MERGE,
-			CascadeType.REFRESH
-	})
-	@JoinTable(name = "usuarios_permisos",
-				joinColumns = {
-						@JoinColumn(name = "id_usuario")
-				},
-				inverseJoinColumns = {
-						@JoinColumn(name = "id_permiso")
-				})
-	private List<Permiso> permisos;
-	
-	public Usuario() {}
-	
-	public Usuario(String username, String password, String mail, boolean habilitado, List<Permiso> permisos) {
+	@OneToOne
+	@JoinColumn(name = "id_categoria")
+	private Categoria categoria;
+
+	@OneToOne(fetch = EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH })
+	@JoinTable(name = "usuarios_permisos", joinColumns = { @JoinColumn(name = "id_usuario") }, inverseJoinColumns = {
+			@JoinColumn(name = "id_permiso") })
+	private Permiso permiso;
+
+	private String nombre;
+
+	public Usuario() {
+	}
+
+	public Usuario(String username, String password, String mail, boolean habilitado, Permiso permisos,
+			Categoria categoria, String nombre) {
 		this.username = username;
 		this.password = password;
 		this.mail = mail;
 		this.habilitado = habilitado;
-		this.permisos = permisos;
+		this.permiso = permisos;
+		this.categoria = categoria;
+		this.nombre = nombre;
 	}
 
 	public Long getIdUsuario() {
@@ -85,12 +86,12 @@ public class Usuario implements UserDetails {
 		this.password = password;
 	}
 
-	public List<Permiso> getPermisos() {
-		return permisos;
+	public Permiso getPermisos() {
+		return permiso;
 	}
 
-	public void setPermisos(List<Permiso> permisos) {
-		this.permisos = permisos;
+	public void setPermisos(Permiso permisos) {
+		this.permiso = permisos;
 	}
 
 	/**
@@ -105,6 +106,22 @@ public class Usuario implements UserDetails {
 	 */
 	public void setMail(String mail) {
 		this.mail = mail;
+	}
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 	/**
@@ -123,8 +140,11 @@ public class Usuario implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return this.getPermisos().stream().map(perm -> new SimpleGrantedAuthority(perm.getDescPermiso()))
-				.collect(Collectors.toList());
+		/*
+		 * return this.getPermisos().stream().map(perm -> new
+		 * SimpleGrantedAuthority(perm.getDescPermiso())) .collect(Collectors.toList());
+		 */
+		return Arrays.asList(new SimpleGrantedAuthority(this.getPermisos().getDescPermiso()));
 	}
 
 	@Override

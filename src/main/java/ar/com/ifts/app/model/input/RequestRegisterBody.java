@@ -19,12 +19,20 @@ public class RequestRegisterBody {
 	@NotBlank(message = "El mail no puede ser vacío.")
 	@Size(min = 5, max = 30, message = "El mail debe contener al menos 5 y máximo 30 caracteres.")
 	private String mail;
+	
+	private Long idCategoria;
+	
+	@NotBlank(message = "El nombre no puede ser vacío.")
+	@Size(min = 5, max = 30, message = "El nombre debe contener al menos 5 y máximo 90 caracteres.")
+	private String nombre;
 
-	public RequestRegisterBody(String username, String password, String permiso, String mail) {
+	public RequestRegisterBody(String username, String password, String permiso, String mail, Long idCategoria, String nombre) {
 		this.username = username;
 		this.password = password;
 		this.permiso = permiso;
 		this.mail = mail;
+		this.idCategoria = idCategoria;
+		this.nombre = nombre;
 	}
 
 	public String getUsername() {
@@ -57,5 +65,21 @@ public class RequestRegisterBody {
 
 	public void setMail(String mail) {
 		this.mail = mail;
+	}
+
+	public Long getIdCategoria() {
+		return idCategoria;
+	}
+
+	public void setIdCategoria(Long idCategoria) {
+		this.idCategoria = idCategoria;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 }
