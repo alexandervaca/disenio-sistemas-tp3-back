@@ -1,5 +1,7 @@
 package ar.com.ifts.app.repository;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,5 +11,7 @@ import ar.com.ifts.app.model.Producto;
 public interface ProductoRepository extends CrudRepository<Producto, Long> {
 	
 	public Producto findByDescProducto(String descProducto);
-	
+
+	public List<Producto> findAll();
+
 }

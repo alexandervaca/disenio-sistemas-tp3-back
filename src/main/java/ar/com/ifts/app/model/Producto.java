@@ -30,6 +30,14 @@ public class Producto implements Serializable {
     @JoinColumn(name="producto_categoria_id")
 	private Categoria categoria;
 
+	public Producto() {}
+
+	public Producto(String descProducto, BigDecimal precio, Categoria categoria) {
+		this.descProducto = descProducto;
+		this.precio = precio;
+		this.categoria = categoria;
+	}
+
 	public Long getIdProducto() {
 		return idProducto;
 	}
