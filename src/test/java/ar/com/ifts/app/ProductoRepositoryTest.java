@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import ar.com.ifts.app.model.Categoria;
 import ar.com.ifts.app.model.Producto;
-import ar.com.ifts.app.repository.CategoriaRepository;
+import ar.com.ifts.app.model.Usuario;
 import ar.com.ifts.app.repository.ProductoRepository;
+import ar.com.ifts.app.repository.UsuarioRepository;
 
 @SpringBootTest
 public class ProductoRepositoryTest {
@@ -19,22 +19,23 @@ public class ProductoRepositoryTest {
 	@Autowired
 	private ProductoRepository productoRepository;
 	@Autowired
-	private CategoriaRepository categoriaRepository;
+	private UsuarioRepository usuarioRepository;
 
 	@Test
 	public void testNuevoProductoConCategoria() {
-		Optional<Categoria> categoriaOptional = categoriaRepository.findById(1L);
-		Categoria categoria = categoriaOptional.isPresent() ? categoriaOptional.get() : null;
-		Assertions.assertNotNull(categoria);
+		Optional<Usuario> usuarioOptional = usuarioRepository.findById(1L);
+		Usuario usuario = usuarioOptional.isPresent() ? usuarioOptional.get() : null;
+		Assertions.assertNotNull(usuario);
 
 		Producto producto = new Producto();
 		producto.setDescProducto("Pantalon");
-		producto.setCategoria(categoria);
+		producto.setUsuario(usuario);
+		producto.setImagen("prueba.jpg");
 		producto.setPrecio(BigDecimal.ZERO);
 		productoRepository.save(producto);
 
 		Assertions.assertNotNull(producto.getIdProducto());
-		System.out.println(producto.getDescProducto() + " " + producto.getCategoria().getDescCategoria());
+		System.out.println(producto.getDescProducto());
 	}
 
 	@Test
@@ -42,6 +43,6 @@ public class ProductoRepositoryTest {
 		Optional<Producto> productoOptional = productoRepository.findById(1L);
 		Producto producto = productoOptional.isPresent() ? productoOptional.get() : null;
 		Assertions.assertNotNull(producto);
-		System.out.println(producto.getDescProducto() + " - " + producto.getCategoria().getDescCategoria());
+		System.out.println(producto.getDescProducto());
 	}
 }

@@ -9,14 +9,20 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ar.com.ifts.app.exception.CreateException;
-import ar.com.ifts.app.model.input.RequestProductoBody;
+import ar.com.ifts.app.exception.ProductoNoExistenteException;
+import ar.com.ifts.app.exception.UsuarioNoExistenteException;
+import ar.com.ifts.app.model.input.RequestCrearProductoBody;
+import ar.com.ifts.app.model.input.RequestModificarProductoBody;
+import ar.com.ifts.app.model.output.GetProductoResponse;
 import ar.com.ifts.app.model.output.GetProductosResponse;
 import ar.com.ifts.app.model.output.ProductoResponse;
 import ar.com.ifts.app.services.ProductosService;
@@ -30,16 +36,39 @@ public class ProductosController {
 
 	@GetMapping(value = "/productos", produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<GetProductosResponse> obtenerProductos() {
-		return ResponseEntity.ok(new GetProductosResponse("Consulta de productos exitosa.", String.valueOf(OK.ordinal()),
-				LocalDate.now(), productosService.getProductos()));
+		return ResponseEntity.ok(new GetProductosResponse("Consulta de productos exitosa.",
+				String.valueOf(OK.ordinal()), LocalDate.now(), productosService.getProductos()));
+	}
+
+	@GetMapping(value = "/productos/{id}", produces = APPLICATION_JSON_VALUE)
+	public ResponseEntity<GetProductoResponse> obtenerProducto(@PathVariable("id") Long idProducto)
+			throws ProductoNoExistenteException {
+		return ResponseEntity.ok(new GetProductoResponse("Consulta de producto exitosa.", String.valueOf(OK.ordinal()),
+				LocalDate.now(), productosService.obtenerProductoPorId(idProducto)));
 	}
 
 	@PostMapping(value = "/productos", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<ProductoResponse> crearProducto(@Valid @RequestBody RequestProductoBody requestProductoBody) throws CreateException {
-
+	public ResponseEntity<ProductoResponse> crearProducto(
+			@Valid @RequestBody RequestCrearProductoBody requestProductoBody) throws UsuarioNoExistenteException {
 		productosService.create(requestProductoBody);
+		return ResponseEntity.ok(
+				new ProductoResponse("Creacion de producto exitosa.", String.valueOf(OK.ordinal()), LocalDate.now()));
+	}
 
-		return ResponseEntity.ok(new ProductoResponse("Creacion de producto exitosa.", String.valueOf(OK.ordinal()),
+	@PutMapping(value = "/productos", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+	public ResponseEntity<ProductoResponse> modificarProducto(
+			@Valid @RequestBody RequestModificarProductoBody requestModificarProductoBody)
+			throws ProductoNoExistenteException {
+		productosService.modificarProducto(requestModificarProductoBody);
+		return ResponseEntity.ok(new ProductoResponse("Modificación de producto exitosa.", String.valueOf(OK.ordinal()),
+				LocalDate.now()));
+	}
+	
+	@DeleteMapping(value = "/productos/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+	public ResponseEntity<ProductoResponse> eliminarProducto(@PathVariable("id") Long idProducto)
+			throws ProductoNoExistenteException {
+		productosService.deleteProducto(idProducto);
+		return ResponseEntity.ok(new ProductoResponse("Baja de producto exitosa.", String.valueOf(OK.ordinal()),
 				LocalDate.now()));
 	}
 }

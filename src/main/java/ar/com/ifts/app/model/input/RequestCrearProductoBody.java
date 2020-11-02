@@ -6,7 +6,7 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public class RequestProductoBody {
+public class RequestCrearProductoBody {
 
 	@NotBlank(message = "La descripción no puede ser vacía.")
 	private String descripcion;
@@ -14,9 +14,11 @@ public class RequestProductoBody {
 	@NotNull(message = "El precio no puede ser nulo")
 	@DecimalMin(value = "0.0")
 	private BigDecimal precio;
+	
+	private String imagen;
 
 	@NotNull(message = "El idCategoria no puede ser nulo.")
-	private Long idCategoria;
+	private Long idUsuario;
 
 	public String getDescripcion() {
 		return descripcion;
@@ -34,12 +36,20 @@ public class RequestProductoBody {
 		this.precio = precio;
 	}
 
-	public Long getIdCategoria() {
-		return idCategoria;
+	public Long getIdUsuario() {
+		return idUsuario;
 	}
 
-	public void setIdCategoria(Long idCategoria) {
-		this.idCategoria = idCategoria;
+	public void setIdUsuario(Long idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
+	public String getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
 	}
 
 }

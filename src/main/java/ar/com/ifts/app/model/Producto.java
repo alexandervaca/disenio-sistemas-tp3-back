@@ -25,41 +25,60 @@ public class Producto implements Serializable {
 	private String descProducto;
 
 	private BigDecimal precio;
+	
+	private String imagen;
 
 	@OneToOne
-    @JoinColumn(name="producto_categoria_id")
-	private Categoria categoria;
+	@JoinColumn(name = "id_usuario")
+	private Usuario usuario;
 
-	public Producto() {}
+	public Producto() {
+	}
 
-	public Producto(String descProducto, BigDecimal precio, Categoria categoria) {
+	public Producto(String descProducto, BigDecimal precio, String imagen, Usuario usuario) {
 		this.descProducto = descProducto;
 		this.precio = precio;
-		this.categoria = categoria;
+		this.imagen = imagen;
+		this.usuario = usuario;
 	}
 
 	public Long getIdProducto() {
 		return idProducto;
 	}
+
 	public void setIdProducto(Long idProducto) {
 		this.idProducto = idProducto;
 	}
+
 	public String getDescProducto() {
 		return descProducto;
 	}
+
 	public void setDescProducto(String descProducto) {
 		this.descProducto = descProducto;
 	}
-	public Categoria getCategoria() {
-		return categoria;
-	}
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
-	}
+
 	public BigDecimal getPrecio() {
 		return precio;
 	}
+
 	public void setPrecio(BigDecimal precio) {
 		this.precio = precio;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public String getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
 	}
 }

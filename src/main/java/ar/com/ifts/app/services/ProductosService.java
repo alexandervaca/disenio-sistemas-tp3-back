@@ -1,17 +1,18 @@
 package ar.com.ifts.app.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ar.com.ifts.app.exception.CreateException;
-import ar.com.ifts.app.model.Categoria;
+import ar.com.ifts.app.exception.ProductoNoExistenteException;
+import ar.com.ifts.app.exception.UsuarioNoExistenteException;
 import ar.com.ifts.app.model.Producto;
-import ar.com.ifts.app.model.input.RequestProductoBody;
-import ar.com.ifts.app.repository.CategoriaRepository;
+import ar.com.ifts.app.model.Usuario;
+import ar.com.ifts.app.model.input.RequestCrearProductoBody;
+import ar.com.ifts.app.model.input.RequestModificarProductoBody;
 import ar.com.ifts.app.repository.ProductoRepository;
+import ar.com.ifts.app.repository.UsuarioRepository;
 
 @Service
 public class ProductosService {
@@ -20,23 +21,35 @@ public class ProductosService {
 	private ProductoRepository productosRepository;
 
 	@Autowired
-	private CategoriaRepository categoriasRepository;
-	
+	private UsuarioRepository usuarioRepository;
+
 	public List<Producto> getProductos() {
 		return productosRepository.findAll();
 	}
+	
+	public Producto obtenerProductoPorId(Long idProducto) throws ProductoNoExistenteException {
+		return productosRepository.findById(idProducto).orElseThrow(ProductoNoExistenteException::new);
+	}
 
-	public void create(RequestProductoBody requestProductoBody) throws CreateException {
-		Long idCategoria = requestProductoBody.getIdCategoria();
-		Optional<Categoria> optionalCategoria = categoriasRepository.findById(idCategoria);
+	public void create(RequestCrearProductoBody requestProductoBody) throws UsuarioNoExistenteException {
+		Usuario usuario = usuarioRepository.findById(requestProductoBody.getIdUsuario())
+				.orElseThrow(UsuarioNoExistenteException::new);
 
-		if (optionalCategoria.isPresent()) {
-			Categoria categoria = optionalCategoria.get();
+		Producto producto = new Producto(requestProductoBody.getDescripcion(), requestProductoBody.getPrecio(),
+				requestProductoBody.getImagen(), usuario);
+		productosRepository.save(producto);
+	}
 
-			Producto producto = new Producto(requestProductoBody.getDescripcion(), requestProductoBody.getPrecio(), categoria);
-			productosRepository.save(producto);
-		} else {
-			throw new CreateException("Categoria no encontrada.");
-		}
+	public void deleteProducto(Long idProducto) throws ProductoNoExistenteException {
+		Producto producto = obtenerProductoPorId(idProducto);
+		productosRepository.delete(producto);
+	}
+	
+	public void modificarProducto(RequestModificarProductoBody requestModificarProductoBody) throws ProductoNoExistenteException {
+		Producto producto = obtenerProductoPorId(requestModificarProductoBody.getIdProducto());
+		producto.setDescProducto(requestModificarProductoBody.getDescripcion());
+		producto.setImagen(requestModificarProductoBody.getImagen());
+		producto.setPrecio(requestModificarProductoBody.getPrecio());
+		productosRepository.save(producto);
 	}
 }

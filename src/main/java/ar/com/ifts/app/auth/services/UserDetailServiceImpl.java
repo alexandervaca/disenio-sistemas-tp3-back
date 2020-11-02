@@ -48,7 +48,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		Optional<Usuario> findByMail = usuarioRepository.findByMail(request.getMail());
 
 		if (findByUsername.isPresent() | findByMail.isPresent()) {
-			System.out.println(findByUsername.get().getPermisos());
+			throw new RegisterException("Usuario o mail existente.");
 		} else {
 			PermisosEnum permiso = PermisosEnum.valueOf(request.getPermiso());
 			Permiso permisoObj = permisoRepository.findByDescPermiso(permiso.getRole());

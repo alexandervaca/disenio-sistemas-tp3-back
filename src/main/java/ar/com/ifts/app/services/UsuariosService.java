@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ar.com.ifts.app.exception.CategoriaNoExistenteException;
 import ar.com.ifts.app.model.Categoria;
 import ar.com.ifts.app.model.Permiso;
 import ar.com.ifts.app.model.Usuario;
@@ -25,11 +26,10 @@ public class UsuariosService {
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 	
-	public List<Usuario> getProveedoresByCategoria(Long idCategoria) {
+	public List<Usuario> getProveedoresByCategoria(Long idCategoria) throws CategoriaNoExistenteException {
 		Permiso permiso = permisoRepository.findByDescPermiso(PermisosEnum.PROVEEDOR.getRole());
-		Categoria categoria = categoriaRepository.findByIdCategoria(idCategoria);
+		Categoria categoria = categoriaRepository.findByIdCategoria(idCategoria).orElseThrow(CategoriaNoExistenteException::new);
 		return usuarioRepository.findByPermisoAndCategoria(permiso, categoria);
-		
 	}
 	
 	public List<Usuario> getProveedores() {

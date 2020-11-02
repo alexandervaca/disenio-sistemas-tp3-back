@@ -11,7 +11,7 @@ import ar.com.ifts.app.model.Categoria;
 @Repository
 public interface CategoriaRepository extends CrudRepository<Categoria, Long> {
 	
-	public Categoria findByIdCategoria(Long idCategoria);
+	public Optional<Categoria> findByIdCategoria(Long idCategoria);
 	
 	public Optional<Categoria> findByDescCategoria(String descCategoria);
 	
