@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,10 +24,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import ar.com.ifts.app.auth.services.JwtService;
 import ar.com.ifts.app.auth.services.UserDetailServiceImpl;
 import ar.com.ifts.app.exception.RegisterException;
+import ar.com.ifts.app.exception.UsuarioNoExistenteException;
 import ar.com.ifts.app.model.input.RequestLoginBody;
 import ar.com.ifts.app.model.input.RequestRegisterBody;
 import ar.com.ifts.app.model.output.LoginResponse;
 import ar.com.ifts.app.model.output.RegisterResponse;
+import ar.com.ifts.app.model.output.Response;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -62,6 +66,13 @@ public class UserController {
 		userDetailService.registerUser(requestRegisterBody);
 		
 		return ResponseEntity.ok(new RegisterResponse("Registro exitoso", String.valueOf(OK.ordinal()), LocalDate.now()));
+	}
+	
+	@PutMapping(value = "/cambio/estado/{id}")
+	public ResponseEntity<Response> habilitarDeshabilitarUsuario(@PathVariable("id") Long idUsuario) throws UsuarioNoExistenteException {
+		boolean habilitado = userDetailService.habilitarDeshabilitarUsuario(idUsuario);
+		String msj = (habilitado) ? "Se habilitó el usuario correctamente." : "Se deshabilitó el usuario correctamente.";
+		return ResponseEntity.ok(new Response(msj, String.valueOf(OK.ordinal()), LocalDate.now()));
 	}
 
 	private void authenticate(String username, String password) {

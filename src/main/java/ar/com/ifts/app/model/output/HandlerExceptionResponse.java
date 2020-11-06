@@ -1,9 +1,7 @@
-package ar.com.ifts.app.model.input;
+package ar.com.ifts.app.model.output;
 
 import java.time.LocalDate;
 import java.util.List;
-
-import ar.com.ifts.app.model.output.Response;
 
 
 

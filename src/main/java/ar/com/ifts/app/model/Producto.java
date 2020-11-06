@@ -26,6 +26,8 @@ public class Producto implements Serializable {
 
 	private BigDecimal precio;
 	
+	private Long stock;
+	
 	private String imagen;
 
 	@OneToOne
@@ -35,9 +37,10 @@ public class Producto implements Serializable {
 	public Producto() {
 	}
 
-	public Producto(String descProducto, BigDecimal precio, String imagen, Usuario usuario) {
+	public Producto(String descProducto, BigDecimal precio, Long stock, String imagen, Usuario usuario) {
 		this.descProducto = descProducto;
 		this.precio = precio;
+		this.stock = stock;
 		this.imagen = imagen;
 		this.usuario = usuario;
 	}
@@ -80,5 +83,13 @@ public class Producto implements Serializable {
 
 	public void setImagen(String imagen) {
 		this.imagen = imagen;
+	}
+
+	public Long getStock() {
+		return stock;
+	}
+
+	public void setStock(Long stock) {
+		this.stock = stock;
 	}
 }

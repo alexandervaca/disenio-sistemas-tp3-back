@@ -21,35 +21,25 @@ public class UsuarioResponseBuilder implements IBuilder<UsuarioResponseDto>{
 		return this;
 	}
 
-
-
 	public UsuarioResponseBuilder setNombre(String nombre) {
 		this.nombre = nombre;
 		return this;
 	}
-
-
 
 	public UsuarioResponseBuilder setMail(String mail) {
 		this.mail = mail;
 		return this;
 	}
 
-
-
 	public UsuarioResponseBuilder setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 		return this;
 	}
 
-
-
 	public UsuarioResponseBuilder setPermiso(Permiso permiso) {
 		this.permiso = permiso;
 		return this;
 	}
-
-
 
 	@Override
 	public UsuarioResponseDto build() {

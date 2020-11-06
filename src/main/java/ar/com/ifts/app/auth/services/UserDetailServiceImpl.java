@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import ar.com.ifts.app.exception.RegisterException;
+import ar.com.ifts.app.exception.UsuarioNoExistenteException;
 import ar.com.ifts.app.model.Categoria;
 import ar.com.ifts.app.model.Permiso;
 import ar.com.ifts.app.model.Usuario;
@@ -62,6 +63,12 @@ public class UserDetailServiceImpl implements UserDetailsService {
 					permisoObj, categoria, request.getNombre());
 			usuarioRepository.save(usuario);
 		}
+	}
+	
+	public boolean habilitarDeshabilitarUsuario(Long usuarioId) throws UsuarioNoExistenteException {
+		Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(UsuarioNoExistenteException::new);
+		usuario.setHabilitado(!usuario.isHabilitado());
+		return usuarioRepository.save(usuario).isHabilitado();
 	}
 
 }

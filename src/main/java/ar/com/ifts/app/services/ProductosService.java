@@ -26,7 +26,7 @@ public class ProductosService {
 	public List<Producto> getProductos() {
 		return productosRepository.findAll();
 	}
-	
+
 	public Producto obtenerProductoPorId(Long idProducto) throws ProductoNoExistenteException {
 		return productosRepository.findById(idProducto).orElseThrow(ProductoNoExistenteException::new);
 	}
@@ -36,7 +36,7 @@ public class ProductosService {
 				.orElseThrow(UsuarioNoExistenteException::new);
 
 		Producto producto = new Producto(requestProductoBody.getDescripcion(), requestProductoBody.getPrecio(),
-				requestProductoBody.getImagen(), usuario);
+				requestProductoBody.getStock(), requestProductoBody.getImagen(), usuario);
 		productosRepository.save(producto);
 	}
 
@@ -44,12 +44,14 @@ public class ProductosService {
 		Producto producto = obtenerProductoPorId(idProducto);
 		productosRepository.delete(producto);
 	}
-	
-	public void modificarProducto(RequestModificarProductoBody requestModificarProductoBody) throws ProductoNoExistenteException {
+
+	public void modificarProducto(RequestModificarProductoBody requestModificarProductoBody)
+			throws ProductoNoExistenteException {
 		Producto producto = obtenerProductoPorId(requestModificarProductoBody.getIdProducto());
 		producto.setDescProducto(requestModificarProductoBody.getDescripcion());
 		producto.setImagen(requestModificarProductoBody.getImagen());
 		producto.setPrecio(requestModificarProductoBody.getPrecio());
+		producto.setStock(requestModificarProductoBody.getStock());
 		productosRepository.save(producto);
 	}
 }

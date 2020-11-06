@@ -15,6 +15,9 @@ public class RequestCrearProductoBody {
 	@DecimalMin(value = "0.0")
 	private BigDecimal precio;
 	
+	@NotNull(message = "El precio no puede ser nulo")
+	private Long stock;
+	
 	private String imagen;
 
 	@NotNull(message = "El idCategoria no puede ser nulo.")
@@ -50,6 +53,14 @@ public class RequestCrearProductoBody {
 
 	public void setImagen(String imagen) {
 		this.imagen = imagen;
+	}
+
+	public Long getStock() {
+		return stock;
+	}
+
+	public void setStock(Long stock) {
+		this.stock = stock;
 	}
 
 }

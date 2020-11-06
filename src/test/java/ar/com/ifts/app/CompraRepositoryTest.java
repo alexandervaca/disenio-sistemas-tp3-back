@@ -1,6 +1,5 @@
 package ar.com.ifts.app;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -37,7 +36,6 @@ public class CompraRepositoryTest {
 		Compra compra = new Compra();
 		compra.setUsuario(usuario);
 		compra.setFechaCompra(LocalDateTime.now());
-		compra.setPrecioTotal(BigDecimal.ZERO);
 
 		compraRepository.save(compra);
 		Assertions.assertNotNull(compra.getIdCompra());
@@ -48,10 +46,8 @@ public class CompraRepositoryTest {
 
 		CompraProducto compraProducto = new CompraProducto();
 		compraProducto.setProducto(producto);
-		compraProducto.setCantProducto(3);
-		compraProducto.setPrecioProducto(producto.getPrecio().multiply(BigDecimal.valueOf(compraProducto.getCantProducto().longValue())));
+		compraProducto.setCantProducto(3L);
 		
-		compra.addProducto(compraProducto);
 		compraRepository.save(compra);
 		Assertions.assertNotNull(compra.getIdCompra());
 	}

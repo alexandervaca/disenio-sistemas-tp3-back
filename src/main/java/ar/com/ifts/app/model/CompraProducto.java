@@ -5,11 +5,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.math.BigDecimal;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -25,42 +23,51 @@ public class CompraProducto {
 	@JoinColumn(name = "id_producto")
 	private Producto producto;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_compra")
-	private Compra compra;
+	private Long idCompra;
 
-	private Integer cantProducto;
+	private Long cantProducto;
+	
+	public CompraProducto() {}
 
-	private BigDecimal precioProducto;
+	public CompraProducto( Producto producto, Long idCompra, Long cantProducto) {
+		this.producto = producto;
+		this.idCompra = idCompra;
+		this.cantProducto = cantProducto;
+	}
 
 	public Long getIdCompraDetalle() {
 		return idCompraDetalle;
 	}
+
 	public void setIdCompraDetalle(Long idCompraDetalle) {
 		this.idCompraDetalle = idCompraDetalle;
 	}
+
 	public Producto getProducto() {
 		return producto;
 	}
+
 	public void setProducto(Producto producto) {
 		this.producto = producto;
 	}
-	public Integer getCantProducto() {
+
+	public Long getCantProducto() {
 		return cantProducto;
 	}
-	public void setCantProducto(Integer cantProducto) {
+
+	public void setCantProducto(Long cantProducto) {
 		this.cantProducto = cantProducto;
 	}
-	public BigDecimal getPrecioProducto() {
-		return precioProducto;
+
+	public Long getIdCompra() {
+		return idCompra;
 	}
-	public void setPrecioProducto(BigDecimal precioProducto) {
-		this.precioProducto = precioProducto;
+
+	public void setIdCompra(Long idCompra) {
+		this.idCompra = idCompra;
 	}
-	public Compra getCompra() {
-		return compra;
-	}
-	public void setCompra(Compra compra) {
-		this.compra = compra;
+	
+	public BigDecimal getTotalPorProducto() {
+		return this.producto.getPrecio().multiply(new BigDecimal(this.getCantProducto()));
 	}
 }

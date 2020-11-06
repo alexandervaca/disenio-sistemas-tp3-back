@@ -17,6 +17,9 @@ public class RequestModificarProductoBody {
 	@NotNull(message = "El precio no puede ser nulo")
 	@DecimalMin(value = "0.0")
 	private BigDecimal precio;
+	
+	@NotNull(message = "El precio no puede ser nulo")
+	private Long stock;
 
 	private String imagen;
 
@@ -51,5 +54,14 @@ public class RequestModificarProductoBody {
 	public void setImagen(String imagen) {
 		this.imagen = imagen;
 	}
+	
+	public Long getStock() {
+		return stock;
+	}
+
+	public void setStock(Long stock) {
+		this.stock = stock;
+	}
+
 
 }
