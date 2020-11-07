@@ -23,17 +23,13 @@ public class NotificacionesController {
 	@Autowired
 	private NotificacionesService notificacionesService;
 
-	@GetMapping(value = "/notificaciones/{id}")
-	public ResponseEntity<GetNotificacionesResponse> getProveedoresPorCategoria(@PathVariable("id") Long idProveedor) {
+	@GetMapping(value = "/notificaciones/{idProveedor}")
+	public ResponseEntity<GetNotificacionesResponse> getProveedoresPorCategoria(@PathVariable Long idProveedor) {
 		return ResponseEntity.ok()
 				.body(new GetNotificacionesResponse("Consulta de notificaciones exitosa.", String.valueOf(OK.ordinal()),
 						LocalDate.now(),
 						notificacionesService.obtenerNotificacionesPorProveedor(idProveedor).stream()
-								.map(elem -> new NotificacionBuilder().setIdCompra(elem.getCompra().getIdCompra())
-										.setIdComprador(elem.getCompra().getUsuario().getIdUsuario())
-										.setNombreComprador(elem.getCompra().getUsuario().getNombre())
-										.setMessage(elem.getMessage()).setTotalCompra(elem.getCompra().getPrecioTotal())
-										.build())
+								.map(elem -> new NotificacionBuilder().setNotificacion(elem).build())
 								.collect(Collectors.toList())));
 	}
 }

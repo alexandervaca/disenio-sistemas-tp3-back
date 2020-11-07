@@ -3,7 +3,7 @@ package ar.com.ifts.app.model.output.dto;
 import ar.com.ifts.app.model.Categoria;
 import ar.com.ifts.app.model.Permiso;
 
-public class UsuarioResponseDto {
+public class UsuarioDto {
 	private Long idUsuario;
 
 	private String nombre;

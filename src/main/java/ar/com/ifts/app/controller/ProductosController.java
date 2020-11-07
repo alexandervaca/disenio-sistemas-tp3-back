@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import java.time.LocalDate;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -25,6 +26,7 @@ import ar.com.ifts.app.model.input.RequestModificarProductoBody;
 import ar.com.ifts.app.model.output.GetProductoResponse;
 import ar.com.ifts.app.model.output.GetProductosResponse;
 import ar.com.ifts.app.model.output.ProductoResponse;
+import ar.com.ifts.app.model.output.dto.ProductoBuilder;
 import ar.com.ifts.app.services.ProductosService;
 
 @RestController
@@ -37,14 +39,15 @@ public class ProductosController {
 	@GetMapping(value = "/productos", produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<GetProductosResponse> obtenerProductos() {
 		return ResponseEntity.ok(new GetProductosResponse("Consulta de productos exitosa.",
-				String.valueOf(OK.ordinal()), LocalDate.now(), productosService.getProductos()));
+				String.valueOf(OK.ordinal()), LocalDate.now(), productosService.getProductos().stream()
+						.map(elem -> new ProductoBuilder().setProducto(elem).build()).collect(Collectors.toList())));
 	}
 
 	@GetMapping(value = "/productos/{id}", produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<GetProductoResponse> obtenerProducto(@PathVariable("id") Long idProducto)
 			throws ProductoNoExistenteException {
 		return ResponseEntity.ok(new GetProductoResponse("Consulta de producto exitosa.", String.valueOf(OK.ordinal()),
-				LocalDate.now(), productosService.obtenerProductoPorId(idProducto)));
+				LocalDate.now(), new ProductoBuilder().setProducto(productosService.obtenerProductoPorId(idProducto)).build()));
 	}
 
 	@PostMapping(value = "/productos", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
@@ -63,12 +66,12 @@ public class ProductosController {
 		return ResponseEntity.ok(new ProductoResponse("Modificación de producto exitosa.", String.valueOf(OK.ordinal()),
 				LocalDate.now()));
 	}
-	
-	@DeleteMapping(value = "/productos/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<ProductoResponse> eliminarProducto(@PathVariable("id") Long idProducto)
+
+	@DeleteMapping(value = "/productos/{idProducto}", produces = APPLICATION_JSON_VALUE)
+	public ResponseEntity<ProductoResponse> eliminarProducto(@PathVariable Long idProducto)
 			throws ProductoNoExistenteException {
 		productosService.deleteProducto(idProducto);
-		return ResponseEntity.ok(new ProductoResponse("Baja de producto exitosa.", String.valueOf(OK.ordinal()),
-				LocalDate.now()));
+		return ResponseEntity
+				.ok(new ProductoResponse("Baja de producto exitosa.", String.valueOf(OK.ordinal()), LocalDate.now()));
 	}
 }

@@ -18,9 +18,8 @@ public class Notificacion {
 	private Long idNotificacion;
 	
 	@OneToOne
-	@JoinColumn(name = "id_producto")
+	@JoinColumn(name = "id_compra")
 	private Compra compra;
-	
 	
 	// Este usuario hace referencia al proveedor
 	@OneToOne
@@ -28,6 +27,8 @@ public class Notificacion {
 	private Usuario usuario;
 	
 	private String message;
+	
+	public Notificacion() { }
 
 	public Notificacion(Compra compra, Usuario usuario, String message) {
 		this.compra = compra;

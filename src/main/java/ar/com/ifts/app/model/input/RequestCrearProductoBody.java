@@ -20,8 +20,8 @@ public class RequestCrearProductoBody {
 	
 	private String imagen;
 
-	@NotNull(message = "El idCategoria no puede ser nulo.")
-	private Long idUsuario;
+	@NotNull(message = "El idProveedor no puede ser nulo.")
+	private Long idProveedor;
 
 	public String getDescripcion() {
 		return descripcion;
@@ -39,12 +39,12 @@ public class RequestCrearProductoBody {
 		this.precio = precio;
 	}
 
-	public Long getIdUsuario() {
-		return idUsuario;
+	public Long getIdProveedor() {
+		return idProveedor;
 	}
 
-	public void setIdUsuario(Long idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setIdProveedor(Long idProveedor) {
+		this.idProveedor = idProveedor;
 	}
 
 	public String getImagen() {

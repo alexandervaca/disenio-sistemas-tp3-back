@@ -58,14 +58,14 @@ public class CompraService {
 				throw new CompraException();
 			}
 			compraProductos.add(compraProductoRepository
-					.save(new CompraProducto(producto, compra.getIdCompra(), productoCant.getCantidad())));
+					.save(new CompraProducto(producto, compra.getIdCompra(), productoCant.getCantidad(),
+							producto.getPrecio().multiply(new BigDecimal(productoCant.getCantidad())))));
 		}
-		BigDecimal total = compraProductos.stream().map(CompraProducto::getTotalPorProducto).reduce(BigDecimal.ZERO,
+		BigDecimal total = compraProductos.stream().map(CompraProducto::getSubtotal).reduce(BigDecimal.ZERO,
 				BigDecimal::add);
-		compra.setPrecioTotal(total);
-		compraRepository.save(compra);
 		StringBuilder sb = new StringBuilder("Se generó una compra para el usuario ");
-		notificacionRepository.save(new Notificacion(compra, proveedor, sb.append(cliente.getNombre()).toString()));
+		notificacionRepository.save(new Notificacion(compra, proveedor,
+				sb.append(cliente.getNombre()).append(" por un total de ").append(total).toString()));
 
 	}
 }

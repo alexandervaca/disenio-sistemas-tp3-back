@@ -1,16 +1,14 @@
 package ar.com.ifts.app.model.output.dto;
 
-import java.math.BigDecimal;
-
-public class NotificacionResponseDto {
+public class NotificacionDto {
 
 	private Long idCompra;
 
 	private Long idComprador;
+	
+	private Long idProveedor;
 
 	private String nombreComprador;
-
-	private BigDecimal totalCompra;
 	
 	private String message;
 
@@ -38,19 +36,19 @@ public class NotificacionResponseDto {
 		this.nombreComprador = nombreComprador;
 	}
 
-	public BigDecimal getTotalCompra() {
-		return totalCompra;
-	}
-
-	public void setTotalCompra(BigDecimal totalCompra) {
-		this.totalCompra = totalCompra;
-	}
-
 	public String getMessage() {
 		return message;
 	}
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public Long getIdProveedor() {
+		return idProveedor;
+	}
+
+	public void setIdProveedor(Long idProveedor) {
+		this.idProveedor = idProveedor;
 	}
 }

@@ -3,7 +3,6 @@ package ar.com.ifts.app.model;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
@@ -29,15 +28,12 @@ public class Compra implements Serializable {
 
 	private LocalDateTime fechaCompra;
 	
-	private BigDecimal precioTotal;
-	
 	public Compra() { }
 	
 	public Compra(Usuario usuario, LocalDateTime fechaCompra) {
 		this.usuario = usuario;
 		this.fechaCompra = fechaCompra;
 	}
-
 	
 	public LocalDateTime getFechaCompra() {
 		return fechaCompra;
@@ -61,13 +57,5 @@ public class Compra implements Serializable {
 
 	public void setIdCompra(Long idCompra) {
 		this.idCompra = idCompra;
-	}
-
-	public BigDecimal getPrecioTotal() {
-		return precioTotal;
-	}
-
-	public void setPrecioTotal(BigDecimal precioTotal) {
-		this.precioTotal = precioTotal;
 	}
 }

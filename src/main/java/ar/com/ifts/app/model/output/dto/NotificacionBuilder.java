@@ -1,58 +1,24 @@
 package ar.com.ifts.app.model.output.dto;
 
-import java.math.BigDecimal;
+import ar.com.ifts.app.model.Notificacion;
 
-public class NotificacionBuilder implements IBuilder<NotificacionResponseDto>{
+public class NotificacionBuilder implements IBuilder<NotificacionDto> {
 
-	private Long idCompra;
+	private Notificacion notificacion;
 
-	private Long idComprador;
-
-	private String nombreComprador;
-
-	private BigDecimal totalCompra;
-	
-	private String message;
-
-	
-	public NotificacionBuilder setIdCompra(Long idCompra) {
-		this.idCompra = idCompra;
+	public NotificacionBuilder setNotificacion(Notificacion notificacion) {
+		this.notificacion = notificacion;
 		return this;
 	}
-
-
-	public NotificacionBuilder setIdComprador(Long idComprador) {
-		this.idComprador = idComprador;
-		return this;
-	}
-
-
-	public NotificacionBuilder setNombreComprador(String nombreComprador) {
-		this.nombreComprador = nombreComprador;
-		return this;
-	}
-
-
-	public NotificacionBuilder setTotalCompra(BigDecimal totalCompra) {
-		this.totalCompra = totalCompra;
-		return this;
-	}
-
-
-	public NotificacionBuilder setMessage(String message) {
-		this.message = message;
-		return this;
-	}
-
 
 	@Override
-	public NotificacionResponseDto build() {
-		NotificacionResponseDto notificacion = new NotificacionResponseDto();
-		notificacion.setIdCompra(this.idCompra);
-		notificacion.setIdComprador(this.idComprador);
-		notificacion.setMessage(this.message);
-		notificacion.setNombreComprador(this.nombreComprador);
-		notificacion.setTotalCompra(this.totalCompra);
+	public NotificacionDto build() {
+		NotificacionDto notificacion = new NotificacionDto();
+		notificacion.setIdCompra(this.notificacion.getCompra().getIdCompra());
+		notificacion.setIdComprador(this.notificacion.getCompra().getUsuario().getIdUsuario());
+		notificacion.setMessage(this.notificacion.getMessage());
+		notificacion.setNombreComprador(this.notificacion.getCompra().getUsuario().getNombre());
+		notificacion.setIdProveedor(this.notificacion.getUsuario().getIdUsuario());
 		return notificacion;
 	}
 

@@ -32,7 +32,7 @@ public class ProductosService {
 	}
 
 	public void create(RequestCrearProductoBody requestProductoBody) throws UsuarioNoExistenteException {
-		Usuario usuario = usuarioRepository.findById(requestProductoBody.getIdUsuario())
+		Usuario usuario = usuarioRepository.findById(requestProductoBody.getIdProveedor())
 				.orElseThrow(UsuarioNoExistenteException::new);
 
 		Producto producto = new Producto(requestProductoBody.getDescripcion(), requestProductoBody.getPrecio(),

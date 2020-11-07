@@ -28,7 +28,7 @@ public class ProveedoresController extends UsuariosController {
 	@GetMapping(value = "/proveedores/{id}")
 	public ResponseEntity<GetUsuariosResponse> getProveedoresPorCategoria(@PathVariable("id") Long idCategoria)
 			throws CategoriaNoExistenteException {
-		return ResponseEntity.ok(new GetUsuariosResponse("Consulta de proveedores exitosa.",
+		return ResponseEntity.ok(new GetUsuariosResponse("Consulta de proveedor exitosa.",
 				String.valueOf(OK.ordinal()), LocalDate.now(),
 				buildListUsuarioResponse(usuariosService.getProveedoresByCategoria(idCategoria))));
 	}
