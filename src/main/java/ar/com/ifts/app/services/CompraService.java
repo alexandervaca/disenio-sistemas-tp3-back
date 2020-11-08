@@ -50,7 +50,7 @@ public class CompraService {
 				.orElseThrow(() -> new CompraServiceException("Cliente inexsitente."));
 		Usuario proveedor = usuariosRepository.findById(requestRealizarCompraBody.getProveedorId())
 				.orElseThrow(() -> new CompraServiceException("Proveedor inexistente."));
-		Compra compra = compraRepository.save(new Compra(cliente, LocalDateTime.now()));
+		Compra compra = compraRepository.save(new Compra(cliente, LocalDateTime.now(), BigDecimal.ZERO));
 		List<CompraProducto> compraProductos = new ArrayList<>();
 		for (ProductoCantidad productoCant : requestRealizarCompraBody.getProductosCantidades()) {
 			Producto producto = productosRepository.findById(productoCant.getProductoId())
@@ -59,11 +59,13 @@ public class CompraService {
 				throw new CompraServiceException("La cantidad ingresada es superior al existente en stock.");
 			}
 			compraProductos.add(compraProductoRepository
-					.save(new CompraProducto(producto, compra.getIdCompra(), productoCant.getCantidad(),
-							producto.getPrecio().multiply(new BigDecimal(productoCant.getCantidad())))));
+					.save(new CompraProducto(producto, compra.getIdCompra(), productoCant.getCantidad())));
 		}
-		BigDecimal total = compraProductos.stream().map(CompraProducto::getSubtotal).reduce(BigDecimal.ZERO,
-				BigDecimal::add);
+		BigDecimal total = compraProductos.stream()
+				.map(elem -> elem.getProducto().getPrecio().multiply(new BigDecimal(elem.getCantProducto())))
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
+		compra.setPrecioTotal(total);
+		compraRepository.save(compra);
 		StringBuilder sb = new StringBuilder("Se generó una compra para el usuario ");
 		notificacionRepository.save(new Notificacion(compra, proveedor,
 				sb.append(cliente.getNombre()).append(" por un total de ").append(total).toString()));

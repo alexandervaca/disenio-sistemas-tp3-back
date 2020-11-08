@@ -2,8 +2,6 @@ package ar.com.ifts.app.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -26,16 +24,13 @@ public class CompraProducto {
 	private Long cantProducto;
 
 	private Long idCompra;
-
-	private BigDecimal subtotal;
 	
 	public CompraProducto() {}
 
-	public CompraProducto( Producto producto, Long idCompra, Long cantProducto, BigDecimal subtotal) {
+	public CompraProducto( Producto producto, Long idCompra, Long cantProducto) {
 		this.producto = producto;
 		this.idCompra = idCompra;
 		this.cantProducto = cantProducto;
-		this.subtotal = subtotal;
 	}
 
 	public Long getIdCompraDetalle() {
@@ -68,13 +63,5 @@ public class CompraProducto {
 
 	public void setIdCompra(Long idCompra) {
 		this.idCompra = idCompra;
-	}
-
-	public BigDecimal getSubtotal() {
-		return subtotal;
-	}
-
-	public void setSubtotal(BigDecimal subtotal) {
-		this.subtotal = subtotal;
 	}
 }

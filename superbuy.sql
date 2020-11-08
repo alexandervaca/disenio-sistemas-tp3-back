@@ -19,11 +19,12 @@ CREATE TABLE `compras` (
   `id_compra` int NOT NULL AUTO_INCREMENT,
   `usuario_id` int NOT NULL,
   `fecha_compra` datetime NOT NULL,
+  `precio_total` decimal(25,2) NOT NULL,
   PRIMARY KEY (`id_compra`),
   UNIQUE KEY `id_compra_UNIQUE` (`id_compra`),
   KEY `compra_usuario` (`usuario_id`),
   CONSTRAINT `compra_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `compras_detalle`
@@ -35,14 +36,13 @@ CREATE TABLE `compras_detalle` (
   `id_compra` int NOT NULL,
   `id_producto` int NOT NULL,
   `cant_producto` int NOT NULL,
-  `subtotal` decimal(20,2) NOT NULL,
   PRIMARY KEY (`id_compra_detalle`),
   UNIQUE KEY `id_compra_detalle_UNIQUE` (`id_compra_detalle`),
   KEY `compras_detalle` (`id_compra`),
   KEY `compras_detalle_prod` (`id_producto`),
   CONSTRAINT `compras_detalle` FOREIGN KEY (`id_compra`) REFERENCES `compras` (`id_compra`),
   CONSTRAINT `compras_detalle_prod` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `notificaciones`
@@ -56,7 +56,7 @@ CREATE TABLE `notificaciones` (
   `message` varchar(120) NOT NULL,
   PRIMARY KEY (`id_notificacion`),
   UNIQUE KEY `id_notificaciones_UNIQUE` (`id_notificacion`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Table structure for table `permisos`
