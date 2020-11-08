@@ -9,6 +9,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,12 +20,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import ar.com.ifts.app.auth.services.JwtService;
 import ar.com.ifts.app.auth.services.UserDetailServiceImpl;
-import ar.com.ifts.app.exception.RegisterException;
-import ar.com.ifts.app.exception.UsuarioNoExistenteException;
+import ar.com.ifts.app.exception.UserDetailServiceImplException;
 import ar.com.ifts.app.model.input.RequestLoginBody;
 import ar.com.ifts.app.model.input.RequestRegisterBody;
 import ar.com.ifts.app.model.output.LoginResponse;
@@ -45,8 +43,7 @@ public class UserController {
 	private UserDetailServiceImpl userDetailService;
 
 	@PostMapping(value = "/login",consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<LoginResponse> login(@Valid @RequestBody RequestLoginBody requestLoginBody)
-			throws JsonProcessingException {
+	public ResponseEntity<LoginResponse> login(@Valid @RequestBody RequestLoginBody requestLoginBody) {
 		String username = requestLoginBody.getUsername();
 		String password = requestLoginBody.getPassword();
 		
@@ -61,15 +58,16 @@ public class UserController {
 	}
 	
 	@PostMapping(value = "/register",consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RequestRegisterBody requestRegisterBody) throws RegisterException {
+	public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RequestRegisterBody requestRegisterBody) throws UserDetailServiceImplException {
 		
 		userDetailService.registerUser(requestRegisterBody);
 		
 		return ResponseEntity.ok(new RegisterResponse("Registro exitoso", String.valueOf(OK.ordinal()), LocalDate.now()));
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping(value = "/cambio/estado/{id}")
-	public ResponseEntity<Response> habilitarDeshabilitarUsuario(@PathVariable("id") Long idUsuario) throws UsuarioNoExistenteException {
+	public ResponseEntity<Response> habilitarDeshabilitarUsuario(@PathVariable("id") Long idUsuario) throws UserDetailServiceImplException {
 		boolean habilitado = userDetailService.habilitarDeshabilitarUsuario(idUsuario);
 		String msj = (habilitado) ? "Se habilitó el usuario correctamente." : "Se deshabilitó el usuario correctamente.";
 		return ResponseEntity.ok(new Response(msj, String.valueOf(OK.ordinal()), LocalDate.now()));

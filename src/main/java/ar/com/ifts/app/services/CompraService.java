@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ar.com.ifts.app.exception.CompraException;
+import ar.com.ifts.app.exception.CompraServiceException;
 import ar.com.ifts.app.model.Compra;
 import ar.com.ifts.app.model.CompraProducto;
 import ar.com.ifts.app.model.Notificacion;
@@ -43,19 +43,20 @@ public class CompraService {
 	@Autowired
 	private NotificacionRepository notificacionRepository;
 
-	@Transactional(rollbackOn = { CompraException.class, IllegalArgumentException.class })
-	public void realizarCompra(@Valid RequestRealizarCompraBody requestRealizarCompraBody) throws CompraException {
+	@Transactional(rollbackOn = { CompraServiceException.class, IllegalArgumentException.class })
+	public void realizarCompra(@Valid RequestRealizarCompraBody requestRealizarCompraBody)
+			throws CompraServiceException {
 		Usuario cliente = usuariosRepository.findById(requestRealizarCompraBody.getClienteId())
-				.orElseThrow(CompraException::new);
+				.orElseThrow(() -> new CompraServiceException("Cliente inexsitente."));
 		Usuario proveedor = usuariosRepository.findById(requestRealizarCompraBody.getProveedorId())
-				.orElseThrow(CompraException::new);
+				.orElseThrow(() -> new CompraServiceException("Proveedor inexistente."));
 		Compra compra = compraRepository.save(new Compra(cliente, LocalDateTime.now()));
 		List<CompraProducto> compraProductos = new ArrayList<>();
 		for (ProductoCantidad productoCant : requestRealizarCompraBody.getProductosCantidades()) {
 			Producto producto = productosRepository.findById(productoCant.getProductoId())
-					.orElseThrow(CompraException::new);
+					.orElseThrow(() -> new CompraServiceException("Producto inexistente."));
 			if (producto.getStock() < productoCant.getCantidad()) {
-				throw new CompraException();
+				throw new CompraServiceException("La cantidad ingresada es superior al existente en stock.");
 			}
 			compraProductos.add(compraProductoRepository
 					.save(new CompraProducto(producto, compra.getIdCompra(), productoCant.getCantidad(),

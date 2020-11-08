@@ -44,9 +44,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		/**TODO: Sacar  "/**" del código **/
 		http.csrf().disable()
-		.authorizeRequests().antMatchers("/api/login", "/api/register", "/**").permitAll()
+		.authorizeRequests().antMatchers("/api/login", "/api/register").permitAll()
 		.anyRequest().authenticated().and()
 		.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

@@ -140,10 +140,6 @@ public class Usuario implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		/*
-		 * return this.getPermisos().stream().map(perm -> new
-		 * SimpleGrantedAuthority(perm.getDescPermiso())) .collect(Collectors.toList());
-		 */
 		return Arrays.asList(new SimpleGrantedAuthority(this.getPermisos().getDescPermiso()));
 	}
 

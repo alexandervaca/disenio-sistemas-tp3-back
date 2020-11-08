@@ -2,11 +2,12 @@ package ar.com.ifts.app.services;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ar.com.ifts.app.exception.ProductoNoExistenteException;
-import ar.com.ifts.app.exception.UsuarioNoExistenteException;
+import ar.com.ifts.app.exception.ProductosServiceException;
 import ar.com.ifts.app.model.Producto;
 import ar.com.ifts.app.model.Usuario;
 import ar.com.ifts.app.model.input.RequestCrearProductoBody;
@@ -27,26 +28,30 @@ public class ProductosService {
 		return productosRepository.findAll();
 	}
 
-	public Producto obtenerProductoPorId(Long idProducto) throws ProductoNoExistenteException {
-		return productosRepository.findById(idProducto).orElseThrow(ProductoNoExistenteException::new);
+	public Producto obtenerProductoPorId(Long idProducto) throws ProductosServiceException {
+		return productosRepository.findById(idProducto)
+				.orElseThrow(() -> new ProductosServiceException("Producto inexistente."));
 	}
 
-	public void create(RequestCrearProductoBody requestProductoBody) throws UsuarioNoExistenteException {
+	@Transactional(rollbackOn = {IllegalArgumentException.class, ProductosServiceException.class})
+	public void create(RequestCrearProductoBody requestProductoBody) throws ProductosServiceException {
 		Usuario usuario = usuarioRepository.findById(requestProductoBody.getIdProveedor())
-				.orElseThrow(UsuarioNoExistenteException::new);
+				.orElseThrow(() -> new ProductosServiceException("Proveedor inexistente."));
 
 		Producto producto = new Producto(requestProductoBody.getDescripcion(), requestProductoBody.getPrecio(),
 				requestProductoBody.getStock(), requestProductoBody.getImagen(), usuario);
 		productosRepository.save(producto);
 	}
 
-	public void deleteProducto(Long idProducto) throws ProductoNoExistenteException {
+	@Transactional(rollbackOn = {IllegalArgumentException.class})
+	public void deleteProducto(Long idProducto) throws ProductosServiceException {
 		Producto producto = obtenerProductoPorId(idProducto);
 		productosRepository.delete(producto);
 	}
 
+	@Transactional(rollbackOn = {IllegalArgumentException.class})
 	public void modificarProducto(RequestModificarProductoBody requestModificarProductoBody)
-			throws ProductoNoExistenteException {
+			throws ProductosServiceException {
 		Producto producto = obtenerProductoPorId(requestModificarProductoBody.getIdProducto());
 		producto.setDescProducto(requestModificarProductoBody.getDescripcion());
 		producto.setImagen(requestModificarProductoBody.getImagen());

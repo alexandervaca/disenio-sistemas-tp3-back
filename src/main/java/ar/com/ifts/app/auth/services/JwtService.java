@@ -2,6 +2,7 @@ package ar.com.ifts.app.auth.services;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +43,9 @@ public class JwtService {
 	}
 	
 	public String generateToken(UserDetails user) {
+		if (!user.isEnabled()) {
+			throw new DisabledException("Usuario deshabilitado. Por favor contacte con un administrador.");
+		}
 		Claims claims = Jwts.claims();
 		claims.put("authorities", user.getAuthorities());
 		
