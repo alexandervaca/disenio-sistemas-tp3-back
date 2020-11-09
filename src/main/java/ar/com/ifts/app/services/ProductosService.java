@@ -42,6 +42,14 @@ public class ProductosService {
 		return productosRepository.findByUsuarioIdUsuario(usuario.getIdUsuario());
 	}
 
+	public List<Producto> getProductosByIdProveedor(Long IdProveedor) throws ProductosServiceException {
+
+		Usuario usuario = usuarioRepository.findById(IdProveedor)
+				.orElseThrow(() -> new ProductosServiceException("Proveedor inexistente."));
+		
+		return productosRepository.findByUsuarioIdUsuario(usuario.getIdUsuario());
+	}
+
 	public Producto obtenerProductoPorId(Long idProducto) throws ProductosServiceException {
 		return productosRepository.findById(idProducto)
 				.orElseThrow(() -> new ProductosServiceException("Producto inexistente."));

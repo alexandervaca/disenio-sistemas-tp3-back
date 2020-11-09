@@ -55,6 +55,15 @@ public class ProductosController {
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PROVEEDOR') or hasRole('ROLE_CLIENTE')")
 	@GetMapping(value = "/productos/{id}", produces = APPLICATION_JSON_VALUE)
+	public ResponseEntity<GetProductosResponse> obtenerProductosPorIdProveedor(@PathVariable("id") Long idProveedor)
+			throws ProductosServiceException {
+		return ResponseEntity.ok(new GetProductosResponse("Consulta de productos exitosa.", String.valueOf(OK.ordinal()),
+				LocalDate.now(), productosService.getProductosByIdProveedor(idProveedor).stream()
+				.map(elem -> new ProductoBuilder().setProducto(elem).build()).collect(Collectors.toList())));
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PROVEEDOR') or hasRole('ROLE_CLIENTE')")
+	@GetMapping(value = "/productos/{id}", produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<GetProductoResponse> obtenerProducto(@PathVariable("id") Long idProducto)
 			throws ProductosServiceException {
 		return ResponseEntity.ok(new GetProductoResponse("Consulta de producto exitosa.", String.valueOf(OK.ordinal()),
