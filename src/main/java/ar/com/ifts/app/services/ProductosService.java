@@ -2,11 +2,13 @@ package ar.com.ifts.app.services;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ar.com.ifts.app.auth.services.JwtService;
 import ar.com.ifts.app.exception.ProductosServiceException;
 import ar.com.ifts.app.model.Producto;
 import ar.com.ifts.app.model.Usuario;
@@ -23,6 +25,9 @@ public class ProductosService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private JwtService jwtService;
 
 	public List<Producto> getProductos() {
 		return productosRepository.findAll();
@@ -34,8 +39,10 @@ public class ProductosService {
 	}
 
 	@Transactional(rollbackOn = {IllegalArgumentException.class, ProductosServiceException.class})
-	public void create(RequestCrearProductoBody requestProductoBody) throws ProductosServiceException {
-		Usuario usuario = usuarioRepository.findById(requestProductoBody.getIdProveedor())
+	public void create(RequestCrearProductoBody requestProductoBody, HttpServletRequest http) throws ProductosServiceException {
+		String username = jwtService.getUsernameFromToken((String) http.getHeader("Authorization"));
+		
+		Usuario usuario = usuarioRepository.findByUsername(username)
 				.orElseThrow(() -> new ProductosServiceException("Proveedor inexistente."));
 
 		Producto producto = new Producto(requestProductoBody.getDescripcion(), requestProductoBody.getPrecio(),

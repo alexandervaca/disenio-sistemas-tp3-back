@@ -20,9 +20,6 @@ public class RequestCrearProductoBody {
 	
 	private String imagen;
 
-	@NotNull(message = "El idProveedor no puede ser nulo.")
-	private Long idProveedor;
-
 	public String getDescripcion() {
 		return descripcion;
 	}
@@ -37,14 +34,6 @@ public class RequestCrearProductoBody {
 
 	public void setPrecio(BigDecimal precio) {
 		this.precio = precio;
-	}
-
-	public Long getIdProveedor() {
-		return idProveedor;
-	}
-
-	public void setIdProveedor(Long idProveedor) {
-		this.idProveedor = idProveedor;
 	}
 
 	public String getImagen() {

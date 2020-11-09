@@ -6,6 +6,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import java.time.LocalDate;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,9 +55,9 @@ public class ProductosController {
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PROVEEDOR')")
 	@PostMapping(value = "/productos", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<ProductoResponse> crearProducto(
+	public ResponseEntity<ProductoResponse> crearProducto(HttpServletRequest http,
 			@Valid @RequestBody RequestCrearProductoBody requestProductoBody) throws ProductosServiceException {
-		productosService.create(requestProductoBody);
+		productosService.create(requestProductoBody, http);
 		return ResponseEntity.ok(
 				new ProductoResponse("Creacion de producto exitosa.", String.valueOf(OK.ordinal()), LocalDate.now()));
 	}

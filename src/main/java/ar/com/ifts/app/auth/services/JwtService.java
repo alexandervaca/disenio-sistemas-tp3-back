@@ -35,7 +35,8 @@ public class JwtService {
 	}
 	
 	private Claims getClaimsFromToken(String token) {
-		return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
+		String tokenWithoutBearer = deleteBearer(token);
+		return Jwts.parser().setSigningKey(key).parseClaimsJws(tokenWithoutBearer).getBody();
 	}
 	
 	public String deleteBearer(String token) {
@@ -48,6 +49,7 @@ public class JwtService {
 		}
 		Claims claims = Jwts.claims();
 		claims.put("authorities", user.getAuthorities());
+		claims.put("username", user.getUsername());
 		
 		Date createDate = new Date();
 		Date expireDate = new Date(createDate.getTime() + expirationMiliseconds);
