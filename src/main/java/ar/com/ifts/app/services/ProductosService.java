@@ -25,7 +25,7 @@ public class ProductosService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	
+
 	@Autowired
 	private JwtService jwtService;
 
@@ -33,15 +33,25 @@ public class ProductosService {
 		return productosRepository.findAll();
 	}
 
+	public List<Producto> getProductosByProveedor(HttpServletRequest http) throws ProductosServiceException {
+		String username = jwtService.getUsernameFromToken((String) http.getHeader("Authorization"));
+
+		Usuario usuario = usuarioRepository.findByUsername(username)
+				.orElseThrow(() -> new ProductosServiceException("Proveedor inexistente."));
+		
+		return productosRepository.findByUsuarioIdUsuario(usuario.getIdUsuario());
+	}
+
 	public Producto obtenerProductoPorId(Long idProducto) throws ProductosServiceException {
 		return productosRepository.findById(idProducto)
 				.orElseThrow(() -> new ProductosServiceException("Producto inexistente."));
 	}
 
-	@Transactional(rollbackOn = {IllegalArgumentException.class, ProductosServiceException.class})
-	public void create(RequestCrearProductoBody requestProductoBody, HttpServletRequest http) throws ProductosServiceException {
+	@Transactional(rollbackOn = { IllegalArgumentException.class, ProductosServiceException.class })
+	public void create(RequestCrearProductoBody requestProductoBody, HttpServletRequest http)
+			throws ProductosServiceException {
 		String username = jwtService.getUsernameFromToken((String) http.getHeader("Authorization"));
-		
+
 		Usuario usuario = usuarioRepository.findByUsername(username)
 				.orElseThrow(() -> new ProductosServiceException("Proveedor inexistente."));
 
@@ -50,13 +60,13 @@ public class ProductosService {
 		productosRepository.save(producto);
 	}
 
-	@Transactional(rollbackOn = {IllegalArgumentException.class})
+	@Transactional(rollbackOn = { IllegalArgumentException.class })
 	public void deleteProducto(Long idProducto) throws ProductosServiceException {
 		Producto producto = obtenerProductoPorId(idProducto);
 		productosRepository.delete(producto);
 	}
 
-	@Transactional(rollbackOn = {IllegalArgumentException.class})
+	@Transactional(rollbackOn = { IllegalArgumentException.class })
 	public void modificarProducto(RequestModificarProductoBody requestModificarProductoBody)
 			throws ProductosServiceException {
 		Producto producto = obtenerProductoPorId(requestModificarProductoBody.getIdProducto());

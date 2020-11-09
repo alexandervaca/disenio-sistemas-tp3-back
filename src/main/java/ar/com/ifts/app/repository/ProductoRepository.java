@@ -13,5 +13,8 @@ public interface ProductoRepository extends CrudRepository<Producto, Long> {
 	public Producto findByDescProducto(String descProducto);
 
 	public List<Producto> findAll();
+	
+	public List<Producto> findByUsuarioIdUsuario(Long idUsuario);
+	
 
 }
