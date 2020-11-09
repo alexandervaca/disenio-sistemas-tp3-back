@@ -44,6 +44,14 @@ public class ProductosController {
 				String.valueOf(OK.ordinal()), LocalDate.now(), productosService.getProductos().stream()
 						.map(elem -> new ProductoBuilder().setProducto(elem).build()).collect(Collectors.toList())));
 	}
+	
+	@PreAuthorize("hasRole('ROLE_PROVEEDOR')")
+	@GetMapping(value = "/productos/proveedor", produces = APPLICATION_JSON_VALUE)
+	public ResponseEntity<GetProductosResponse> obtenerProductosPorProveedor(HttpServletRequest http) throws ProductosServiceException {
+		return ResponseEntity.ok(new GetProductosResponse("Consulta de productos exitosa.",
+				String.valueOf(OK.ordinal()), LocalDate.now(), productosService.getProductosByProveedor(http).stream()
+						.map(elem -> new ProductoBuilder().setProducto(elem).build()).collect(Collectors.toList())));
+	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PROVEEDOR') or hasRole('ROLE_CLIENTE')")
 	@GetMapping(value = "/productos/{id}", produces = APPLICATION_JSON_VALUE)
@@ -53,7 +61,7 @@ public class ProductosController {
 				LocalDate.now(), new ProductoBuilder().setProducto(productosService.obtenerProductoPorId(idProducto)).build()));
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PROVEEDOR')")
+	@PreAuthorize("hasRole('ROLE_PROVEEDOR')")
 	@PostMapping(value = "/productos", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<ProductoResponse> crearProducto(HttpServletRequest http,
 			@Valid @RequestBody RequestCrearProductoBody requestProductoBody) throws ProductosServiceException {
