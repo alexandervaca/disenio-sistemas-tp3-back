@@ -15,13 +15,21 @@ public class CategoriaRepositoryTest {
 	private CategoriaRepository categoriaRepository;
 
 	@Test
-	public void testNuevaCategoria() {
-		Categoria entity = new Categoria();
-		entity.setDescCategoria("Indumentaria");
-		categoriaRepository.save(entity);
+	public void testNuevasCategorias() {
+		Categoria entity1 = new Categoria();
+		entity1.setDescCategoria("Alimentos");
+		categoriaRepository.save(entity1);
 
-		Assertions.assertNotNull(entity.getIdCategoria());
-
-		System.out.println(entity.getDescCategoria());
+		Categoria entity2 = new Categoria();
+		entity2.setDescCategoria("Electronica");
+		categoriaRepository.save(entity2);
+		
+		Categoria entity3 = new Categoria();
+		entity3.setDescCategoria("Mascotas");
+		categoriaRepository.save(entity3);
+		
+		Categoria entity4 = new Categoria();
+		entity4.setDescCategoria("Bebidas");
+		categoriaRepository.save(entity4);
 	}
 }
