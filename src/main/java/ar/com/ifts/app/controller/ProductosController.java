@@ -54,8 +54,8 @@ public class ProductosController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PROVEEDOR') or hasRole('ROLE_CLIENTE')")
-	@GetMapping(value = "/productos/{id}", produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<GetProductosResponse> obtenerProductosPorIdProveedor(@PathVariable("id") Long idProveedor)
+	@GetMapping(value = "/productos/{idProveedor}", produces = APPLICATION_JSON_VALUE)
+	public ResponseEntity<GetProductosResponse> obtenerProductosPorIdProveedor(@PathVariable("idProveedor") Long idProveedor)
 			throws ProductosServiceException {
 		return ResponseEntity.ok(new GetProductosResponse("Consulta de productos exitosa.", String.valueOf(OK.ordinal()),
 				LocalDate.now(), productosService.getProductosByIdProveedor(idProveedor).stream()
@@ -90,10 +90,10 @@ public class ProductosController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PROVEEDOR')")
-	@DeleteMapping(value = "/productos/{idProducto}", produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<ProductoResponse> eliminarProducto(@PathVariable Long idProducto)
+	@PutMapping(value = "/productos/{idProducto}", produces = APPLICATION_JSON_VALUE)
+	public ResponseEntity<ProductoResponse> cambiarEstadoProducto(@PathVariable Long idProducto)
 			throws ProductosServiceException {
-		productosService.deleteProducto(idProducto);
+		productosService.cambiarEstadoProducto(idProducto);
 		return ResponseEntity
 				.ok(new ProductoResponse("Baja de producto exitosa.", String.valueOf(OK.ordinal()), LocalDate.now()));
 	}

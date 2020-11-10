@@ -29,6 +29,8 @@ public class Producto implements Serializable {
 	private Long stock;
 	
 	private String imagen;
+	
+	private boolean habilitado;
 
 	@OneToOne
 	@JoinColumn(name = "id_usuario")
@@ -37,12 +39,13 @@ public class Producto implements Serializable {
 	public Producto() {
 	}
 
-	public Producto(String descProducto, BigDecimal precio, Long stock, String imagen, Usuario usuario) {
+	public Producto(String descProducto, BigDecimal precio, Long stock, String imagen, Usuario usuario, boolean habilitado) {
 		this.descProducto = descProducto;
 		this.precio = precio;
 		this.stock = stock;
 		this.imagen = imagen;
 		this.usuario = usuario;
+		this.habilitado = habilitado;
 	}
 
 	public Long getIdProducto() {
@@ -91,5 +94,13 @@ public class Producto implements Serializable {
 
 	public void setStock(Long stock) {
 		this.stock = stock;
+	}
+
+	public boolean isHabilitado() {
+		return habilitado;
+	}
+
+	public void setHabilitado(boolean habilitado) {
+		this.habilitado = habilitado;
 	}
 }

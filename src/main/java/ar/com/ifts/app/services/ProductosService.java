@@ -64,14 +64,15 @@ public class ProductosService {
 				.orElseThrow(() -> new ProductosServiceException("Proveedor inexistente."));
 
 		Producto producto = new Producto(requestProductoBody.getDescripcion(), requestProductoBody.getPrecio(),
-				requestProductoBody.getStock(), requestProductoBody.getImagen(), usuario);
+				requestProductoBody.getStock(), requestProductoBody.getImagen(), usuario, true);
 		productosRepository.save(producto);
 	}
 
 	@Transactional(rollbackOn = { IllegalArgumentException.class })
-	public void deleteProducto(Long idProducto) throws ProductosServiceException {
+	public void cambiarEstadoProducto(Long idProducto) throws ProductosServiceException {
 		Producto producto = obtenerProductoPorId(idProducto);
-		productosRepository.delete(producto);
+		producto.setHabilitado(!producto.isHabilitado());
+		productosRepository.save(producto);
 	}
 
 	@Transactional(rollbackOn = { IllegalArgumentException.class })

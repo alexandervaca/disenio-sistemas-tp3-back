@@ -83,9 +83,9 @@ CREATE TABLE `productos` (
   `id_usuario` int NOT NULL,
   `imagen` varchar(100) DEFAULT NULL,
   `stock` int NOT NULL,
+  `habilitado` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_producto`),
-  UNIQUE KEY `id_producto_UNIQUE` (`id_producto`),
-  UNIQUE KEY `desc_producto_UNIQUE` (`desc_producto`)
+  UNIQUE KEY `id_producto_UNIQUE` (`id_producto`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --

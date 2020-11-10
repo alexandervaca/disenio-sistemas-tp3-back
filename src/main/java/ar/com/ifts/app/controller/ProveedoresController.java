@@ -28,7 +28,7 @@ public class ProveedoresController extends UsuariosController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PROVEEDOR') or hasRole('ROLE_CLIENTE')")
-	@GetMapping(value = "/proveedores/{id}")
+	@GetMapping(value = "/proveedores/{id}", produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<GetUsuariosResponse> getProveedoresPorCategoria(@PathVariable("id") Long idCategoria)
 			throws UsuarioServiceException {
 		return ResponseEntity.ok(new GetUsuariosResponse("Consulta de proveedor exitosa.", String.valueOf(OK.ordinal()),
