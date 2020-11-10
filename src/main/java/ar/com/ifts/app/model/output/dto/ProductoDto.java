@@ -15,6 +15,8 @@ public class ProductoDto {
 	private String imagen;
 
 	private Long idProveedor;
+	
+	private boolean habilitado;
 
 	public Long getIdProducto() {
 		return idProducto;
@@ -62,5 +64,13 @@ public class ProductoDto {
 
 	public void setIdProveedor(Long idProveedor) {
 		this.idProveedor = idProveedor;
+	}
+
+	public boolean isHabilitado() {
+		return habilitado;
+	}
+
+	public void setHabilitado(boolean habilitado) {
+		this.habilitado = habilitado;
 	}
 }

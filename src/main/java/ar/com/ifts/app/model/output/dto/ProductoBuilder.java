@@ -20,6 +20,7 @@ public class ProductoBuilder implements IBuilder<ProductoDto> {
 		producto.setStock(this.producto.getStock());
 		producto.setImagen(this.producto.getImagen());
 		producto.setIdProveedor(this.producto.getUsuario().getIdUsuario());
+		producto.setHabilitado(this.producto.isHabilitado());
 		return producto;
 	}
 
