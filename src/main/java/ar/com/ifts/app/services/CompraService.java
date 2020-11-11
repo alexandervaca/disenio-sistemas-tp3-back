@@ -42,6 +42,9 @@ public class CompraService {
 
 	@Autowired
 	private NotificacionRepository notificacionRepository;
+	
+	@Autowired
+	private ProductoRepository productoRepository;
 
 	@Transactional(rollbackOn = { CompraServiceException.class, IllegalArgumentException.class })
 	public void realizarCompra(@Valid RequestRealizarCompraBody requestRealizarCompraBody)
@@ -60,6 +63,8 @@ public class CompraService {
 			}
 			compraProductos.add(compraProductoRepository
 					.save(new CompraProducto(producto, compra.getIdCompra(), productoCant.getCantidad())));
+			producto.setStock(producto.getStock() - productoCant.getCantidad());
+			productoRepository.save(producto);
 		}
 		BigDecimal total = compraProductos.stream()
 				.map(elem -> elem.getProducto().getPrecio().multiply(new BigDecimal(elem.getCantProducto())))

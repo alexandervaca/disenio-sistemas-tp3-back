@@ -58,6 +58,12 @@ public class UsuariosService {
 				.collect(Collectors.toList());
 	}
 
+	public Usuario getUsuario(HttpServletRequest http) throws UsuarioServiceException {
+		String username = jwtService.getUsernameFromToken((String) http.getHeader("Authorization"));
+		return usuarioRepository.findByUsername(username)
+				.orElseThrow(() -> new UsuarioServiceException("Usuario inexistente."));
+	}
+
 	public List<Usuario> getUsuariosByPermiso(String role) {
 		return usuarioRepository.findByPermiso(permisoRepository.findByDescPermiso(role));
 	}

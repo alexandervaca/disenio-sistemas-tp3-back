@@ -31,7 +31,7 @@ import ar.com.ifts.app.model.output.Response;
 
 @RestController
 @RequestMapping(value = "/api")
-public class UserController {
+public class UserMangementController {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
