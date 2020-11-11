@@ -44,6 +44,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 		return this.globleExcpetionHandlerReturn(errorDetails, INTERNAL_SERVER_ERROR);
 	}
+	
+	@ExceptionHandler(NotificacionesServiceException.class)
+	public ResponseEntity<?> notificacionesServiceExceptionHandler(NotificacionesServiceException ex,
+			WebRequest request) {
+		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+		return this.globleExcpetionHandlerReturn(errorDetails, INTERNAL_SERVER_ERROR);
+	}
 
 	@ExceptionHandler(UsuarioServiceException.class)
 	public ResponseEntity<?> usuarioServiceExceptionHandler(UsuarioServiceException ex, WebRequest request) {

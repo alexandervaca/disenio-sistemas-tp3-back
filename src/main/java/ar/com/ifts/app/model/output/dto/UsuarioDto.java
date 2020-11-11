@@ -13,6 +13,8 @@ public class UsuarioDto {
 	private Categoria categoria;
 
 	private Permiso permiso;
+	
+	private boolean habilitado;
 
 	public Long getIdUsuario() {
 		return idUsuario;
@@ -52,5 +54,13 @@ public class UsuarioDto {
 
 	public void setPermiso(Permiso permiso) {
 		this.permiso = permiso;
+	}
+
+	public boolean isHabilitado() {
+		return habilitado;
+	}
+
+	public void setHabilitado(boolean habilitado) {
+		this.habilitado = habilitado;
 	}
 }

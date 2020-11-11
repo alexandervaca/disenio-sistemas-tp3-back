@@ -21,6 +21,8 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Long>{
 	
 	public List<Usuario> findByPermisoAndCategoria(Permiso permisos, Categoria categoria);
 	
+	public List<Usuario> findAll();
+	
 	
 	
 	

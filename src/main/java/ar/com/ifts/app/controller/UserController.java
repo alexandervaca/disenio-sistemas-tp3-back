@@ -54,7 +54,8 @@ public class UserController {
 		String token = jwtService.generateToken(user);
 
 		return ResponseEntity
-				.ok(new LoginResponse("Logín exitoso", String.valueOf(OK.ordinal()), LocalDate.now(), token, user.getAuthorities().toString()));
+				.ok(new LoginResponse("Logín exitoso", String.valueOf(OK.ordinal()),
+						LocalDate.now(), token, user.getAuthorities().toString(), user.getUsername()));
 	}
 	
 	@PostMapping(value = "/register",consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)

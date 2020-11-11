@@ -20,6 +20,7 @@ public class UsuarioBuilder implements IBuilder<UsuarioDto>{
 		usuario.setMail(this.usuario.getMail());
 		usuario.setCategoria(this.usuario.getCategoria());
 		usuario.setPermiso(this.usuario.getPermisos());
+		usuario.setHabilitado(this.usuario.isHabilitado());
 		return usuario;
 	}
 

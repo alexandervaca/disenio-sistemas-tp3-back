@@ -1,10 +1,14 @@
 package ar.com.ifts.app.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ar.com.ifts.app.auth.services.JwtService;
 import ar.com.ifts.app.exception.UsuarioServiceException;
 import ar.com.ifts.app.model.Categoria;
 import ar.com.ifts.app.model.Permiso;
@@ -26,6 +30,9 @@ public class UsuariosService {
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 
+	@Autowired
+	private JwtService jwtService;
+
 	public List<Usuario> getProveedoresByCategoria(Long idCategoria) throws UsuarioServiceException {
 		Permiso permiso = permisoRepository.findByDescPermiso(PermisosEnum.PROVEEDOR.getRole());
 		Categoria categoria = categoriaRepository.findByIdCategoria(idCategoria)
@@ -43,6 +50,12 @@ public class UsuariosService {
 
 	public List<Usuario> getAdministradores() {
 		return this.getUsuariosByPermiso(PermisosEnum.ADMIN.getRole());
+	}
+
+	public List<Usuario> getAllUsuarios(HttpServletRequest http) {
+		String username = jwtService.getUsernameFromToken((String) http.getHeader("Authorization"));
+		return this.usuarioRepository.findAll().stream().filter(elem -> !elem.getUsername().equals(username))
+				.collect(Collectors.toList());
 	}
 
 	public List<Usuario> getUsuariosByPermiso(String role) {
