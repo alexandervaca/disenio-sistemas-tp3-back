@@ -53,7 +53,7 @@ public class ProductosController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_PROVEEDOR') or hasRole('ROLE_CLIENTE')")
-	@GetMapping(value = "/productos/{idProveedor}", produces = APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/productos/proveedor/{idProveedor}", produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<GetProductosResponse> obtenerProductosPorIdProveedor(@PathVariable("idProveedor") Long idProveedor)
 			throws ProductosServiceException {
 		return ResponseEntity.ok(new GetProductosResponse("Consulta de productos exitosa.", String.valueOf(OK.ordinal()),
