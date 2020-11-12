@@ -52,7 +52,7 @@ public class CompraController {
 						.map(elem -> new CompraBuilder().setCompra(elem).build()).collect(Collectors.toList())));
 	}
 
-	@PreAuthorize("hasRole('ROLE_CLIENTE')")
+	@PreAuthorize("hasRole('ROLE_CLIENTE') or hasRole('ROLE_PROVEEDOR')")
 	@GetMapping(value = "/compras/detalle/{idCompra}", produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<GetComprasProductoResponse> obtenerComprasDetalle(@PathVariable("idCompra") Long idCompra) throws CompraServiceException {
 		return ResponseEntity.ok(new GetComprasProductoResponse("Consulta de compras detalle exitosa.",
