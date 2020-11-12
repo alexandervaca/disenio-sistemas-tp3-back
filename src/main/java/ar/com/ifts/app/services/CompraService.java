@@ -5,12 +5,14 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ar.com.ifts.app.auth.services.JwtService;
 import ar.com.ifts.app.exception.CompraServiceException;
 import ar.com.ifts.app.model.Compra;
 import ar.com.ifts.app.model.CompraProducto;
@@ -33,6 +35,9 @@ public class CompraService {
 
 	@Autowired
 	private UsuarioRepository usuariosRepository;
+
+	@Autowired
+	private JwtService jwtService;
 
 	@Autowired
 	private CompraRepository compraRepository;
@@ -75,5 +80,18 @@ public class CompraService {
 		notificacionRepository.save(new Notificacion(compra, proveedor,
 				sb.append(cliente.getNombre()).append(" por un total de ").append(total).toString()));
 
+	}
+
+	public List<Compra> getComprasByCliente(HttpServletRequest http) throws CompraServiceException {
+		String username = jwtService.getUsernameFromToken((String) http.getHeader("Authorization"));
+
+		Usuario usuario = usuariosRepository.findByUsername(username)
+				.orElseThrow(() -> new CompraServiceException("Cliente inexistente."));
+		
+		return compraRepository.findByUsuarioIdUsuario(usuario.getIdUsuario());
+	}
+
+	public List<CompraProducto> getComprasProductoByIdCompra(Long idCompra) throws CompraServiceException {
+		return compraProductoRepository.findByIdCompra(idCompra);
 	}
 }
